@@ -50,6 +50,7 @@ mutation {
 ```
 
 Creating Post
+
 obs: replace the <userId> with the actual valid userId to create a post succesfully
 ```
 mutation {
