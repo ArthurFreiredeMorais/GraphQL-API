@@ -1,4 +1,11 @@
 # GraphQL-API
+
+# Install Application
+```
+npm i    // on the root folder to install dependencies
+
+node server.js  // To run the server.js
+```
  
 Tests on the Apollo Server
 
