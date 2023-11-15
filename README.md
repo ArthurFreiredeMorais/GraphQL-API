@@ -1,4 +1,5 @@
 # GraphQL-API
+Simple API to create and fetch users and posts for college homework with the teacher José Anderson at Unifacisa-PB
 
 # Install Application
 ```
