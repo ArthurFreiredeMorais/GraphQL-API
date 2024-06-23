@@ -84,7 +84,7 @@ async function startApolloServer() {
   // Aplicar o middleware Apollo após o CORS
   server.applyMiddleware({ app });
 
-  const PORT = 4001;
+  const PORT = 80;
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://localhost:${PORT}/graphql`);
   });
