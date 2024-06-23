@@ -1,7 +1,8 @@
+const cors = require('cors')
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
 const { v4: uuidv4 } = require('uuid'); // This is a ID random generator package to use with GraphQL
-const cors = require('cors')
+
 
 // data to initialize with something
 let users = [
@@ -80,11 +81,11 @@ async function startApolloServer() {
   server.applyMiddleware({ app }); // Apply Apollo middleware to the Express app
 
   const PORT = 4001;
+  app.use(cors());
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://localhost:${PORT}/graphql`);
   });
 
-  app.use(cors());
 }
 
 startApolloServer();
