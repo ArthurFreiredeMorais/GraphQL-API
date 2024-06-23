@@ -78,7 +78,7 @@ async function startApolloServer() {
   const app = express();
   server.applyMiddleware({ app }); // Apply Apollo middleware to the Express app
 
-  const PORT = 4000;
+  const PORT = 4001;
   app.listen({ port: PORT }, () =>
     console.log(`Server running at http://localhost:${PORT}${server.graphqlPath}`) //calling the server to see if its working
   );
