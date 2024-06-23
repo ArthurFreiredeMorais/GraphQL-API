@@ -1,10 +1,9 @@
-const cors = require('cors')
+const cors = require('cors');
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
-const { v4: uuidv4 } = require('uuid'); // This is a ID random generator package to use with GraphQL
+const { v4: uuidv4 } = require('uuid'); // Gerador de IDs
 
-
-// data to initialize with something
+// Dados iniciais
 let users = [
   { id: uuidv4(), username: 'user1', email: 'user1@example.com' }, 
   { id: uuidv4(), username: 'user2', email: 'user2@example.com' }
@@ -15,7 +14,7 @@ let posts = [
   { id: uuidv4(), title: 'Post 2', content: 'Content for post 2', userId: users[1].id }
 ];
 
-// GraphQL schema for users and posts
+// Esquema GraphQL
 const typeDefs = gql`
   type User {
     id: ID!
@@ -41,26 +40,26 @@ const typeDefs = gql`
   }
 `;
 
-// GraphQL resolvers
+// Resolvers GraphQL
 const resolvers = {
   Query: {
-    users: () => users,  //fetch both users and posts
+    users: () => users,
     posts: () => posts
   },
   Mutation: {
     createUser: (_, { username, email }) => {
-      const newUser = { id: uuidv4(), username, email };  //Creation of the user with the id generator
+      const newUser = { id: uuidv4(), username, email };
       users.push(newUser);
       return newUser;
     },
     createPost: (_, { title, content, userId }) => {
-      const userExists = users.some(user => user.id === userId); // Can just create a post with the userId 
+      const userExists = users.some(user => user.id === userId);
 
       if (!userExists) {
-        throw new Error('User not found'); // Throw an error if the user is not found
+        throw new Error('User not found');
       }
 
-      const newPost = { id: uuidv4(), title, content, userId };  //content of the post
+      const newPost = { id: uuidv4(), title, content, userId };
       posts.push(newPost);
       return newPost;
     }
@@ -68,24 +67,27 @@ const resolvers = {
   Post: {
     author: (parent) => {
       const user = users.find(user => user.id === parent.userId);
-      return user || null;  //if there is no author associated with the its gonna throw null message
+      return user || null;
     }
   }
 };
 
 async function startApolloServer() {
-  const server = new ApolloServer({ typeDefs, resolvers });  //calling the functions of the apolloserver
+  const server = new ApolloServer({ typeDefs, resolvers });
   await server.start();
 
   const app = express();
-  server.applyMiddleware({ app }); // Apply Apollo middleware to the Express app
+
+  // Aplicar o middleware CORS antes de qualquer outra configuração
+  app.use(cors());
+
+  // Aplicar o middleware Apollo após o CORS
+  server.applyMiddleware({ app });
 
   const PORT = 4001;
-  app.use(cors());
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://localhost:${PORT}/graphql`);
   });
-
 }
 
 startApolloServer();
